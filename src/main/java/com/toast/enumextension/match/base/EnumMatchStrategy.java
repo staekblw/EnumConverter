@@ -5,8 +5,8 @@ import com.toast.enumextension.ValueExposedEnum;
 /**
  * check if the String value match the Enum Constant
  */
-public interface MatchStrategy {
-    <T extends ValueExposedEnum> boolean isMatch(String value, T constant);
+public interface EnumMatchStrategy {
+    <T extends ValueExposedEnum> boolean isMatch(String value, T enumConstant);
 }
 
 

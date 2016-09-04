@@ -1,20 +1,20 @@
 package com.toast.enumextension;
 
-import com.toast.enumextension.match.IgnoreCase;
-import com.toast.enumextension.match.base.MatchStrategy;
+import com.toast.enumextension.match.ValueEqualIgnoreCase;
+import com.toast.enumextension.match.base.EnumMatchStrategy;
 
 /**
  * Created by lbwang on 9/2/16.
  */
 public class ValueExposedEnumParser {
     public static <T extends ValueExposedEnum> T parseIgnoreCase(String value, Class<T> type) {
-        MatchStrategy ignoreCase = new IgnoreCase();
+        EnumMatchStrategy ignoreCase = ValueEqualIgnoreCase.getInstance();
         return parse(value, type, ignoreCase);
     }
 
-    static <T extends ValueExposedEnum> T parse(String value, Class<T> enumType, MatchStrategy matchStrategy) {
+    static <T extends ValueExposedEnum> T parse(String value, Class<T> enumType, EnumMatchStrategy enumMatchStrategy) {
         for (T constant : enumType.getEnumConstants()) {
-            if (matchStrategy.isMatch(value, constant)) {
+            if (enumMatchStrategy.isMatch(value, constant)) {
                 return constant;
             }
         }

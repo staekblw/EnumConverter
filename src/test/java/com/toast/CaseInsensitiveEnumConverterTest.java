@@ -15,11 +15,7 @@ import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.junit.Test;
 
-public class EnumConverterTest {
-    private CaseInsensitiveEnumToEnumConverter<SourceDocumentType, TargetDocumentType> caseInsensitiveEnumToEnumConverter =
-            new CaseInsensitiveEnumToEnumConverter<>();
-    private CaseInsensitiveStringToEnumConverter<String, ValueExposedEnum> caseInsensitiveStringToEnumConverter =
-            new CaseInsensitiveStringToEnumConverter<>();
+public class CaseInsensitiveEnumConverterTest {
 
     @Test
     public void can_convert_to_target_document_type_event_the_enum_name_different_but_value_are_equal_ignore_case() {
@@ -34,7 +30,7 @@ public class EnumConverterTest {
 
 
     @Test
-    public void can_map_string_with_strange_uppercase_letters_to_target_document_type() {
+    public void can_convert_string_to_target_document_type_as_long_as_string_and_enum_value_equal_ignore_case() {
         EarthCorpPolicy moonCorpPolicy = new EarthCorpPolicy();
         String documentTypeWithSomeUnusualUpperCase = "EXCEL DOc";
         moonCorpPolicy.setDocumentType(documentTypeWithSomeUnusualUpperCase);
@@ -45,13 +41,17 @@ public class EnumConverterTest {
         assertThat(starCorpPolicy.getDocumentType(), is(TargetDocumentType.EXCEL_DOCUMENT));
     }
 
-    private MapperFacade mapper(Class<?> aType, Class<StarCorpPolicy> bType) {
+    private MapperFacade mapper(Class<?> sourceType, Class<StarCorpPolicy> targetType) {
+        CaseInsensitiveEnumToEnumConverter<SourceDocumentType, TargetDocumentType> sourceDocumentTypeToTargetDocumentTypeConverter =
+                new CaseInsensitiveEnumToEnumConverter<>();
+        CaseInsensitiveStringToEnumConverter<String, ValueExposedEnum> stringToTargetDocumentTypeConverter =
+                new CaseInsensitiveStringToEnumConverter<>();
         MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
         mapperFactory.getConverterFactory().registerConverter(
-                caseInsensitiveEnumToEnumConverter);
+                sourceDocumentTypeToTargetDocumentTypeConverter);
         mapperFactory.getConverterFactory().registerConverter(
-                caseInsensitiveStringToEnumConverter);
-        mapperFactory.classMap(aType, bType)
+                stringToTargetDocumentTypeConverter);
+        mapperFactory.classMap(sourceType, targetType)
                 .byDefault().register();
         return mapperFactory.getMapperFacade();
     }
