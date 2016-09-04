@@ -18,7 +18,7 @@ import org.junit.Test;
 public class CaseInsensitiveEnumConverterTest {
 
     @Test
-    public void can_convert_to_target_document_type_event_the_enum_name_different_but_value_are_equal_ignore_case() {
+    public void can_convert_to_target_document_type_even_the_enum_name_different_but_value_are_equal_ignore_case() {
         MoonCorpPolicy moonCorpPolicy = new MoonCorpPolicy();
         moonCorpPolicy.setDocumentType(SourceDocumentType.EXCEL_DOc);
 
